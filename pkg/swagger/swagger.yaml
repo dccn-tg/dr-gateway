@@ -1,0 +1,202 @@
+swagger: "2.0"
+
+basePath: /v1
+
+info:
+  description: dr gateway APIs
+  title: dr-gateway
+  version: 0.1.0
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+
+  apiKeyHeader:
+    type: apiKey
+    in: header
+    name: X-API-Key
+
+  oauth2:
+    type: oauth2
+    flow: application
+    tokenUrl: 'https://login.dccn.nl/connect/token'
+    scopes:
+      urn:dccn:filer-gateway:*: general access scope for filer-gateway APIs
+
+# API paths
+paths:
+
+  /ping:
+    get:
+      summary: endpoint for API server health check.
+      security:
+        - oauth2: [urn:dccn:dr-gateway:*]
+        - basicAuth: []
+          apiKeyHeader: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: success
+          schema:
+            type: string
+            enum: [pong]
+        500:
+          description: failure
+          schema:
+            $ref: '#/definitions/responseBody500'
+          description: failure
+
+  /collections:
+    get:
+      summary: get metadata of all collections
+
+      consumes:
+        - application/json
+
+      produces:
+        - application/json
+
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/responseBodyCollections'
+        500:
+          description: failure
+          schema:
+            $ref: '#/definitions/responseBody500'
+
+  /collections/ou/{id}:
+    get:
+      summary: get metadata of collections belonging to the organizational unit
+
+      consumes:
+        - application/json
+
+      produces:
+        - application/json
+
+      parameters:
+        - in: path
+          name: id
+          description: short name of the organizational unit
+          type: string
+          enum: [dcc, dccn, dcn, dcmn]
+          required: true
+
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/responseBodyCollections'
+        500:
+          description: failure
+          schema:
+            $ref: '#/definitions/responseBody500'
+
+  /collections/project/{id}:
+    get:
+      summary: get metadata of collections associated with the project id
+
+      consumes:
+        - application/json
+
+      produces:
+        - application/json
+
+      parameters:
+        - in: path
+          name: id
+          description: project identifier
+          type: string
+          required: true
+
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/responseBodyCollections'
+        500:
+          description: failure
+          schema:
+            $ref: '#/definitions/responseBody500'
+
+# object definitions
+definitions:
+
+  responseBody500:
+    description: JSON object containing server side error.
+    properties:
+      exitCode:
+        description: server-side exit code.
+        type: integer
+      errorMessage:
+        description: server-side error message.
+        type: string
+
+  responseBodyCollectionMetadata:
+    description: JSON object containing collection metadata.
+    properties:
+      path:
+        description: "collection path"
+        type: string
+      identifier:
+        description: "collection identifier"
+        type: string
+      identifierDOI:
+        description: "collection DOI"
+        type: string
+      type:
+        $ref: "#/definitions/collectionType"
+      state:
+        $ref: "#/definitions/collectionState"
+      organizationalUnit:
+        description: "organizational unit"
+        type: string
+      projectID:
+        description: "project identifier"
+        type: string
+      numberOfFiles:
+        description: "number of files in the collection"
+        type: integer
+      quotaInBytes:
+        description: "collection storage quota"
+        type: integer
+      sizeInBytes:
+        description: "size of data in the collection"
+        type: integer
+    required:
+      - path
+      - identifier
+      - identifierDOI
+      - type
+      - state
+      - organizationalUnit
+      - numberOfFiles
+      - quotaInBytes
+      - sizeInBytes
+      - projectID
+
+  responseBodyCollections:
+    description: JSON list containing a list of collections
+    properties:
+      collections:
+        type: array
+        items:
+          $ref: '#/definitions/responseBodyCollectionMetadata'
+
+  collectionType:
+    description: collection type
+    type: string
+    enum: [dac, rdc, dsc, unknown]
+
+  collectionState:
+    description: collection state
+    type: string
+    enum: [editable, reviewable_internal, reviewable_external, archived, published, unknown]
+
+  principal:
+    type: string

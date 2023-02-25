@@ -1,0 +1,16 @@
+apiKey: demo
+auth:
+  demo: demo123
+jwksEndpoint: https://auth-dev.dccn.nl/.well-known/openid-configuration/jwks
+dr:
+  irodsHost: icat.localhost
+  irodsPort: 1247
+  irodsZone: nl.ru.donders
+  irodsUser: user
+  irodsPass: pass
+  organisationalUnits:
+    - DCCN
+    - DCC
+    - DCN
+    - DCMN
+    
