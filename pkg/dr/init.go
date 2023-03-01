@@ -103,6 +103,7 @@ func NewCollectionType(t string) CollectionType {
 type DRCollection struct {
 	Identifier         string
 	IdentifierDOI      string
+	ProjectID          string
 	Path               string
 	Type               CollectionType
 	State              CollectionState
@@ -275,6 +276,8 @@ func getCollections(acc *types.IRODSAccount, cpaths chan string) chan *DRCollect
 							c.IdentifierDOI = m.Value
 						case "collectionIdentifier":
 							c.Identifier = m.Value
+						case "projectId":
+							c.ProjectID = m.Value
 						case "state":
 							c.State = NewCollectionState(m.Value)
 						case "type":

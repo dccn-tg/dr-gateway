@@ -200,6 +200,8 @@ func main() {
 	// associate handler functions with implementations
 	api.GetPingHandler = operations.GetPingHandlerFunc(handler.GetPing(cfg))
 	api.GetCollectionsHandler = operations.GetCollectionsHandlerFunc(handler.GetCollections(&ccache))
+	api.GetCollectionsOuIDHandler = operations.GetCollectionsOuIDHandlerFunc(handler.GetCollectionsOfOu(&ccache))
+	api.GetCollectionsProjectIDHandler = operations.GetCollectionsProjectIDHandlerFunc(handler.GetCollectionsOfProject(&ccache))
 
 	// configure API
 	server.ConfigureAPI()

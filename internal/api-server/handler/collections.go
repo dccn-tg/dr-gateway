@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strings"
+
 	"github.com/Donders-Institute/dr-gateway/pkg/dr"
 	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
 	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/restapi/operations"
@@ -14,22 +16,63 @@ func GetCollections(ccache *CollectionsCache) func(params operations.GetCollecti
 		colls := []*models.ResponseBodyCollectionMetadata{}
 
 		for _, c := range ccache.GetCollections() {
-			colls = append(colls, &models.ResponseBodyCollectionMetadata{
-				Identifier:         &c.Identifier,
-				IdentifierDOI:      &c.IdentifierDOI,
-				Path:               &c.Path,
-				OrganizationalUnit: &c.OrganisationalUnit,
-				QuotaInBytes:       &c.QuotaInBytes,
-				NumberOfFiles:      &c.NumberOfFiles,
-				SizeInBytes:        &c.SizeInBytes,
-				State:              collectionState(c.State),
-				Type:               collectionType(c.Type),
-			})
+			colls = append(colls, makeResponseBodyCollectionMetadata(c))
 		}
 
 		return operations.NewGetCollectionsOK().WithPayload(&models.ResponseBodyCollections{
 			Collections: colls,
 		})
+	}
+}
+
+// GetCollectionsOfOu returns all collections of an organisational unit.
+func GetCollectionsOfOu(ccache *CollectionsCache) func(params operations.GetCollectionsOuIDParams) middleware.Responder {
+	return func(params operations.GetCollectionsOuIDParams) middleware.Responder {
+		id := strings.ToLower(params.ID)
+
+		colls := []*models.ResponseBodyCollectionMetadata{}
+		for _, c := range ccache.GetCollections() {
+			if strings.ToLower(c.OrganisationalUnit) == id {
+				colls = append(colls, makeResponseBodyCollectionMetadata(c))
+			}
+		}
+
+		return operations.NewGetCollectionsOuIDOK().WithPayload(&models.ResponseBodyCollections{
+			Collections: colls,
+		})
+	}
+}
+
+// GetCollectionsOfProject returns all collections of a project.
+func GetCollectionsOfProject(ccache *CollectionsCache) func(params operations.GetCollectionsProjectIDParams) middleware.Responder {
+	return func(params operations.GetCollectionsProjectIDParams) middleware.Responder {
+		id := strings.ToLower(params.ID)
+
+		colls := []*models.ResponseBodyCollectionMetadata{}
+		for _, c := range ccache.GetCollections() {
+			if strings.ToLower(c.ProjectID) == id {
+				colls = append(colls, makeResponseBodyCollectionMetadata(c))
+			}
+		}
+
+		return operations.NewGetCollectionsProjectIDOK().WithPayload(&models.ResponseBodyCollections{
+			Collections: colls,
+		})
+	}
+}
+
+func makeResponseBodyCollectionMetadata(c *dr.DRCollection) *models.ResponseBodyCollectionMetadata {
+	return &models.ResponseBodyCollectionMetadata{
+		Identifier:         &c.Identifier,
+		IdentifierDOI:      &c.IdentifierDOI,
+		ProjectID:          &c.ProjectID,
+		Path:               &c.Path,
+		OrganizationalUnit: &c.OrganisationalUnit,
+		QuotaInBytes:       &c.QuotaInBytes,
+		NumberOfFiles:      &c.NumberOfFiles,
+		SizeInBytes:        &c.SizeInBytes,
+		State:              collectionState(c.State),
+		Type:               collectionType(c.Type),
 	}
 }
 
