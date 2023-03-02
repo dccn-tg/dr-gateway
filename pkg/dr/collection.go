@@ -124,7 +124,7 @@ func GetAllCollections(config Config) (chan *DRCollection, error) {
 
 		for _, ou := range config.OrganisationalUnits {
 			if _colls, err := fs.SearchCollectionsByMeta(conn, "organisationalUnit", ou); err != nil {
-				log.Errorf(err.Error())
+				log.Errorf("%s\n", err.Error())
 			} else {
 				for _, c := range _colls {
 					cpaths <- c.Path

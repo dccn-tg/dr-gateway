@@ -6,8 +6,23 @@ import (
 	"path/filepath"
 	"testing"
 
+	log "github.com/Donders-Institute/tg-toolset-golang/pkg/logger"
 	"github.com/spf13/viper"
 )
+
+func init() {
+	cfg := log.Configuration{
+		EnableConsole:     true,
+		ConsoleJSONFormat: false,
+		ConsoleLevel:      log.Debug,
+		EnableFile:        true,
+		FileJSONFormat:    true,
+		FileLocation:      "log/dr-gateway_test.log",
+		FileLevel:         log.Debug,
+	}
+	// initialize logger
+	log.NewLogger(cfg, log.InstanceZapLogger)
+}
 
 // load configuration to DRConfig structure
 func loadDRConfig(cpath string) (Config, error) {

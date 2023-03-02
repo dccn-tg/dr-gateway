@@ -36,7 +36,7 @@ func GetAllUsers(config Config) (chan *DRUser, error) {
 		defer conn.Disconnect()
 
 		if _users, err := fs.ListUsers(conn); err != nil {
-			log.Errorf(err.Error())
+			log.Errorf("%s\n", err.Error())
 		} else {
 			for _, u := range _users {
 				uids <- u.Name
