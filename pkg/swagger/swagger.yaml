@@ -49,6 +49,23 @@ paths:
             $ref: '#/definitions/responseBody500'
           description: failure
 
+  /users:
+    get:
+      summary: get metadata of all users
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/responseBodyUsers'
+        500:
+          description: failure
+          schema:
+            $ref: '#/definitions/responseBody500'
+
   /collections:
     get:
       summary: get metadata of all collections
@@ -71,7 +88,7 @@ paths:
 
   /collections/ou/{id}:
     get:
-      summary: get metadata of collections belonging to the organizational unit
+      summary: get metadata of collections belonging to the organisational unit
 
       consumes:
         - application/json
@@ -82,7 +99,7 @@ paths:
       parameters:
         - in: path
           name: id
-          description: short name of the organizational unit
+          description: short name of the organisational unit
           type: string
           enum: [dcc, dccn, dcn, dcmn]
           required: true
@@ -153,8 +170,8 @@ definitions:
         $ref: "#/definitions/collectionType"
       state:
         $ref: "#/definitions/collectionState"
-      organizationalUnit:
-        description: "organizational unit"
+      organisationalUnit:
+        description: "organisational unit"
         type: string
       projectID:
         description: "project identifier"
@@ -174,7 +191,7 @@ definitions:
       - identifierDOI
       - type
       - state
-      - organizationalUnit
+      - organisationalUnit
       - numberOfFiles
       - quotaInBytes
       - sizeInBytes
@@ -187,6 +204,37 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/responseBodyCollectionMetadata'
+
+  responseBodyUserMetadata:
+    description: JSON object containing user metadata.
+    properties:
+      displayName:
+        description: "display name"
+        type: string
+      identityProvider:
+        description: "identity provider"
+        type: string
+      organisationalUnits:
+        description: "organisational units"
+        type: array
+        items:
+          type: string
+      email:
+        description: "email address"
+        type: string
+        format: email
+    required:
+      - displayName
+      - identityProvider
+      - organisationalUnits
+
+  responseBodyUsers:
+    description: JSON list containing a list of users
+    properties:
+      users:
+        type: array
+        items:
+          $ref: '#/definitions/responseBodyUserMetadata'
 
   collectionType:
     description: collection type

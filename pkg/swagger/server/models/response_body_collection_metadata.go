@@ -31,9 +31,9 @@ type ResponseBodyCollectionMetadata struct {
 	// Required: true
 	NumberOfFiles *int64 `json:"numberOfFiles"`
 
-	// organizational unit
+	// organisational unit
 	// Required: true
-	OrganizationalUnit *string `json:"organizationalUnit"`
+	OrganisationalUnit *string `json:"organisationalUnit"`
 
 	// collection path
 	// Required: true
@@ -76,7 +76,7 @@ func (m *ResponseBodyCollectionMetadata) Validate(formats strfmt.Registry) error
 		res = append(res, err)
 	}
 
-	if err := m.validateOrganizationalUnit(formats); err != nil {
+	if err := m.validateOrganisationalUnit(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -137,9 +137,9 @@ func (m *ResponseBodyCollectionMetadata) validateNumberOfFiles(formats strfmt.Re
 	return nil
 }
 
-func (m *ResponseBodyCollectionMetadata) validateOrganizationalUnit(formats strfmt.Registry) error {
+func (m *ResponseBodyCollectionMetadata) validateOrganisationalUnit(formats strfmt.Registry) error {
 
-	if err := validate.Required("organizationalUnit", "body", m.OrganizationalUnit); err != nil {
+	if err := validate.Required("organisationalUnit", "body", m.OrganisationalUnit); err != nil {
 		return err
 	}
 

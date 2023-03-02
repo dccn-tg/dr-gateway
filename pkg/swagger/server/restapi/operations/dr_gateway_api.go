@@ -56,6 +56,9 @@ func NewDrGatewayAPI(spec *loads.Document) *DrGatewayAPI {
 		GetPingHandler: GetPingHandlerFunc(func(params GetPingParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation GetPing has not yet been implemented")
 		}),
+		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
+		}),
 
 		// Applies when the "X-API-Key" header is set
 		APIKeyHeaderAuth: func(token string) (*models.Principal, error) {
@@ -129,6 +132,8 @@ type DrGatewayAPI struct {
 	GetCollectionsProjectIDHandler GetCollectionsProjectIDHandler
 	// GetPingHandler sets the operation handler for the get ping operation
 	GetPingHandler GetPingHandler
+	// GetUsersHandler sets the operation handler for the get users operation
+	GetUsersHandler GetUsersHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -227,6 +232,9 @@ func (o *DrGatewayAPI) Validate() error {
 	}
 	if o.GetPingHandler == nil {
 		unregistered = append(unregistered, "GetPingHandler")
+	}
+	if o.GetUsersHandler == nil {
+		unregistered = append(unregistered, "GetUsersHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -353,6 +361,10 @@ func (o *DrGatewayAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/ping"] = NewGetPing(o.context, o.GetPingHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

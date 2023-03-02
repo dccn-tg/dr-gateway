@@ -32,7 +32,7 @@ func NewGetCollectionsOuID(ctx *middleware.Context, handler GetCollectionsOuIDHa
 /*
 	GetCollectionsOuID swagger:route GET /collections/ou/{id} getCollectionsOuId
 
-get metadata of collections belonging to the organizational unit
+get metadata of collections belonging to the organisational unit
 */
 type GetCollectionsOuID struct {
 	Context *middleware.Context

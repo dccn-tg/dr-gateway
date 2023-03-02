@@ -24,5 +24,8 @@ swagger:
 doc: swagger
 	swagger serve pkg/swagger/swagger.yaml
 
+test_dr: build
+	GOOS=$(GOOS) GO111MODULE=$(GO111MODULE) DR_GATEWAY_CONFIG=$(DR_GATEWAY_CONFIG) go test -v github.com/Donders-Institute/dr-gateway/pkg/dr/... 
+
 clean:
 	rm -rf bin

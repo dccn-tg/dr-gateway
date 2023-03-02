@@ -67,7 +67,7 @@ func makeResponseBodyCollectionMetadata(c *dr.DRCollection) *models.ResponseBody
 		IdentifierDOI:      &c.IdentifierDOI,
 		ProjectID:          &c.ProjectID,
 		Path:               &c.Path,
-		OrganizationalUnit: &c.OrganisationalUnit,
+		OrganisationalUnit: &c.OrganisationalUnit,
 		QuotaInBytes:       &c.QuotaInBytes,
 		NumberOfFiles:      &c.NumberOfFiles,
 		SizeInBytes:        &c.SizeInBytes,

@@ -63,7 +63,7 @@ type GetCollectionsOuIDParams struct {
 
 	/* ID.
 
-	   short name of the organizational unit
+	   short name of the organisational unit
 	*/
 	ID string
 

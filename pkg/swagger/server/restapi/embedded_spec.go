@@ -59,7 +59,7 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "get metadata of collections belonging to the organizational unit",
+        "summary": "get metadata of collections belonging to the organisational unit",
         "parameters": [
           {
             "enum": [
@@ -69,7 +69,7 @@ func init() {
               "dcmn"
             ],
             "type": "string",
-            "description": "short name of the organizational unit",
+            "description": "short name of the organisational unit",
             "name": "id",
             "in": "path",
             "required": true
@@ -163,6 +163,31 @@ func init() {
           }
         }
       }
+    },
+    "/users": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "get metadata of all users",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/responseBodyUsers"
+            }
+          },
+          "500": {
+            "description": "failure",
+            "schema": {
+              "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -212,7 +237,7 @@ func init() {
         "identifierDOI",
         "type",
         "state",
-        "organizationalUnit",
+        "organisationalUnit",
         "numberOfFiles",
         "quotaInBytes",
         "sizeInBytes",
@@ -231,8 +256,8 @@ func init() {
           "description": "number of files in the collection",
           "type": "integer"
         },
-        "organizationalUnit": {
-          "description": "organizational unit",
+        "organisationalUnit": {
+          "description": "organisational unit",
           "type": "string"
         },
         "path": {
@@ -266,6 +291,47 @@ func init() {
           "type": "array",
           "items": {
             "$ref": "#/definitions/responseBodyCollectionMetadata"
+          }
+        }
+      }
+    },
+    "responseBodyUserMetadata": {
+      "description": "JSON object containing user metadata.",
+      "required": [
+        "displayName",
+        "identityProvider",
+        "organisationalUnits"
+      ],
+      "properties": {
+        "displayName": {
+          "description": "display name",
+          "type": "string"
+        },
+        "email": {
+          "description": "email address",
+          "type": "string",
+          "format": "email"
+        },
+        "identityProvider": {
+          "description": "identity provider",
+          "type": "string"
+        },
+        "organisationalUnits": {
+          "description": "organisational units",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responseBodyUsers": {
+      "description": "JSON list containing a list of users",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/responseBodyUserMetadata"
           }
         }
       }
@@ -332,7 +398,7 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "get metadata of collections belonging to the organizational unit",
+        "summary": "get metadata of collections belonging to the organisational unit",
         "parameters": [
           {
             "enum": [
@@ -342,7 +408,7 @@ func init() {
               "dcmn"
             ],
             "type": "string",
-            "description": "short name of the organizational unit",
+            "description": "short name of the organisational unit",
             "name": "id",
             "in": "path",
             "required": true
@@ -436,6 +502,31 @@ func init() {
           }
         }
       }
+    },
+    "/users": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "get metadata of all users",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/responseBodyUsers"
+            }
+          },
+          "500": {
+            "description": "failure",
+            "schema": {
+              "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -485,7 +576,7 @@ func init() {
         "identifierDOI",
         "type",
         "state",
-        "organizationalUnit",
+        "organisationalUnit",
         "numberOfFiles",
         "quotaInBytes",
         "sizeInBytes",
@@ -504,8 +595,8 @@ func init() {
           "description": "number of files in the collection",
           "type": "integer"
         },
-        "organizationalUnit": {
-          "description": "organizational unit",
+        "organisationalUnit": {
+          "description": "organisational unit",
           "type": "string"
         },
         "path": {
@@ -539,6 +630,47 @@ func init() {
           "type": "array",
           "items": {
             "$ref": "#/definitions/responseBodyCollectionMetadata"
+          }
+        }
+      }
+    },
+    "responseBodyUserMetadata": {
+      "description": "JSON object containing user metadata.",
+      "required": [
+        "displayName",
+        "identityProvider",
+        "organisationalUnits"
+      ],
+      "properties": {
+        "displayName": {
+          "description": "display name",
+          "type": "string"
+        },
+        "email": {
+          "description": "email address",
+          "type": "string",
+          "format": "email"
+        },
+        "identityProvider": {
+          "description": "identity provider",
+          "type": "string"
+        },
+        "organisationalUnits": {
+          "description": "organisational units",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responseBodyUsers": {
+      "description": "JSON list containing a list of users",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/responseBodyUserMetadata"
           }
         }
       }

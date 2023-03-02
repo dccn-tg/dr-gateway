@@ -82,6 +82,11 @@ func configureAPI(api *operations.DrGatewayAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetPing has not yet been implemented")
 		})
 	}
+	if api.GetUsersHandler == nil {
+		api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetUsers has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 

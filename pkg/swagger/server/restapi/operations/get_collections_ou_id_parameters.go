@@ -31,7 +31,7 @@ type GetCollectionsOuIDParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*short name of the organizational unit
+	/*short name of the organisational unit
 	  Required: true
 	  In: path
 	*/

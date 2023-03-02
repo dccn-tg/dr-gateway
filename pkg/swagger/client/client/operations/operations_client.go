@@ -38,6 +38,8 @@ type ClientService interface {
 
 	GetPing(params *GetPingParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetPingOK, error)
 
+	GetUsers(params *GetUsersParams, opts ...ClientOption) (*GetUsersOK, error)
+
 	SetTransport(transport runtime.ClientTransport)
 }
 
@@ -80,7 +82,7 @@ func (a *Client) GetCollections(params *GetCollectionsParams, opts ...ClientOpti
 }
 
 /*
-GetCollectionsOuID gets metadata of collections belonging to the organizational unit
+GetCollectionsOuID gets metadata of collections belonging to the organisational unit
 */
 func (a *Client) GetCollectionsOuID(params *GetCollectionsOuIDParams, opts ...ClientOption) (*GetCollectionsOuIDOK, error) {
 	// TODO: Validate the params before sending
@@ -191,6 +193,44 @@ func (a *Client) GetPing(params *GetPingParams, authInfo runtime.ClientAuthInfoW
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for GetPing: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+GetUsers gets metadata of all users
+*/
+func (a *Client) GetUsers(params *GetUsersParams, opts ...ClientOption) (*GetUsersOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetUsersParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetUsers",
+		Method:             "GET",
+		PathPattern:        "/users",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetUsersReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetUsersOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetUsers: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
