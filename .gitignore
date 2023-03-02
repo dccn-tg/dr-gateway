@@ -20,3 +20,4 @@ log/**
 # vendor/
 
 config/*.demo.yml
+config/*_test.yml
