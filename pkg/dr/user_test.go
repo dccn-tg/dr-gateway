@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func init() {
+func initLogger() {
 	cfg := log.Configuration{
 		EnableConsole:     true,
 		ConsoleJSONFormat: false,
@@ -53,6 +53,8 @@ func loadDRConfig(cpath string) (Config, error) {
 }
 
 func TestGetAllUsers(t *testing.T) {
+
+	initLogger()
 
 	pathCfg := os.Getenv("DR_GATEWAY_CONFIG")
 
