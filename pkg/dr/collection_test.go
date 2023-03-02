@@ -22,6 +22,6 @@ func TestGetAllCollections(t *testing.T) {
 	}
 
 	for c := range colls {
-		t.Logf("user: %+v\n", c)
+		t.Logf("collection: %+v\n", c)
 	}
 }
