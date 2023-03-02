@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/Donders-Institute/tg-toolset-golang v0.0.0-20221031152334-cb43f0ad9650
-	github.com/cyverse/go-irodsclient v0.10.10
+	github.com/cyverse/go-irodsclient v0.10.12
 	github.com/go-openapi/errors v0.20.3
 	github.com/go-openapi/loads v0.21.2
 	github.com/go-openapi/runtime v0.25.0
@@ -54,6 +54,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
