@@ -59,6 +59,12 @@ func NewDrGatewayAPI(spec *loads.Document) *DrGatewayAPI {
 		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
 		}),
+		GetUsersOuIDHandler: GetUsersOuIDHandlerFunc(func(params GetUsersOuIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUsersOuID has not yet been implemented")
+		}),
+		GetUsersSearchHandler: GetUsersSearchHandlerFunc(func(params GetUsersSearchParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUsersSearch has not yet been implemented")
+		}),
 
 		// Applies when the "X-API-Key" header is set
 		APIKeyHeaderAuth: func(token string) (*models.Principal, error) {
@@ -134,6 +140,10 @@ type DrGatewayAPI struct {
 	GetPingHandler GetPingHandler
 	// GetUsersHandler sets the operation handler for the get users operation
 	GetUsersHandler GetUsersHandler
+	// GetUsersOuIDHandler sets the operation handler for the get users ou ID operation
+	GetUsersOuIDHandler GetUsersOuIDHandler
+	// GetUsersSearchHandler sets the operation handler for the get users search operation
+	GetUsersSearchHandler GetUsersSearchHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -235,6 +245,12 @@ func (o *DrGatewayAPI) Validate() error {
 	}
 	if o.GetUsersHandler == nil {
 		unregistered = append(unregistered, "GetUsersHandler")
+	}
+	if o.GetUsersOuIDHandler == nil {
+		unregistered = append(unregistered, "GetUsersOuIDHandler")
+	}
+	if o.GetUsersSearchHandler == nil {
+		unregistered = append(unregistered, "GetUsersSearchHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -365,6 +381,14 @@ func (o *DrGatewayAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users/ou/{id}"] = NewGetUsersOuID(o.context, o.GetUsersOuIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users/search"] = NewGetUsersSearch(o.context, o.GetUsersSearchHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

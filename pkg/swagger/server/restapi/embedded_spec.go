@@ -188,6 +188,85 @@ func init() {
           }
         }
       }
+    },
+    "/users/ou/{id}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "get metadata of users belonging to the organisational unit",
+        "parameters": [
+          {
+            "enum": [
+              "dcc",
+              "dccn",
+              "dcn",
+              "dcmn"
+            ],
+            "type": "string",
+            "description": "short name of the organisational unit",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/responseBodyUsers"
+            }
+          },
+          "500": {
+            "description": "failure",
+            "schema": {
+              "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
+    },
+    "/users/search": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "search users with matched email address and/or display name",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "display name",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "email address",
+            "name": "email",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/responseBodyUsers"
+            }
+          },
+          "500": {
+            "description": "failure",
+            "schema": {
+              "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -512,6 +591,85 @@ func init() {
           "application/json"
         ],
         "summary": "get metadata of all users",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/responseBodyUsers"
+            }
+          },
+          "500": {
+            "description": "failure",
+            "schema": {
+              "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
+    },
+    "/users/ou/{id}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "get metadata of users belonging to the organisational unit",
+        "parameters": [
+          {
+            "enum": [
+              "dcc",
+              "dccn",
+              "dcn",
+              "dcmn"
+            ],
+            "type": "string",
+            "description": "short name of the organisational unit",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/responseBodyUsers"
+            }
+          },
+          "500": {
+            "description": "failure",
+            "schema": {
+              "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
+    },
+    "/users/search": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "search users with matched email address and/or display name",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "display name",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "email address",
+            "name": "email",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "success",

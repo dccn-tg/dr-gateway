@@ -211,6 +211,8 @@ func main() {
 	api.GetCollectionsProjectIDHandler = operations.GetCollectionsProjectIDHandlerFunc(handler.GetCollectionsOfProject(&ccache))
 
 	api.GetUsersHandler = operations.GetUsersHandlerFunc(handler.GetUsers(&ucache))
+	api.GetUsersOuIDHandler = operations.GetUsersOuIDHandlerFunc(handler.GetUsersOfOu(&ucache))
+	api.GetUsersSearchHandler = operations.GetUsersSearchHandlerFunc(handler.SearchUsers(&ucache))
 
 	// configure API
 	server.ConfigureAPI()

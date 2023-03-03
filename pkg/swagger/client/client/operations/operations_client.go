@@ -40,6 +40,10 @@ type ClientService interface {
 
 	GetUsers(params *GetUsersParams, opts ...ClientOption) (*GetUsersOK, error)
 
+	GetUsersOuID(params *GetUsersOuIDParams, opts ...ClientOption) (*GetUsersOuIDOK, error)
+
+	GetUsersSearch(params *GetUsersSearchParams, opts ...ClientOption) (*GetUsersSearchOK, error)
+
 	SetTransport(transport runtime.ClientTransport)
 }
 
@@ -231,6 +235,82 @@ func (a *Client) GetUsers(params *GetUsersParams, opts ...ClientOption) (*GetUse
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for GetUsers: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+GetUsersOuID gets metadata of users belonging to the organisational unit
+*/
+func (a *Client) GetUsersOuID(params *GetUsersOuIDParams, opts ...ClientOption) (*GetUsersOuIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetUsersOuIDParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetUsersOuID",
+		Method:             "GET",
+		PathPattern:        "/users/ou/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetUsersOuIDReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetUsersOuIDOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetUsersOuID: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+GetUsersSearch searches users with matched email address and or display name
+*/
+func (a *Client) GetUsersSearch(params *GetUsersSearchParams, opts ...ClientOption) (*GetUsersSearchOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetUsersSearchParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetUsersSearch",
+		Method:             "GET",
+		PathPattern:        "/users/search",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetUsersSearchReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetUsersSearchOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetUsersSearch: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strings"
+
 	"github.com/Donders-Institute/dr-gateway/pkg/dr"
 	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
 	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/restapi/operations"
@@ -19,6 +21,59 @@ func GetUsers(ucache *UsersCache) func(params operations.GetUsersParams) middlew
 		}
 
 		return operations.NewGetUsersOK().WithPayload(&models.ResponseBodyUsers{
+			Users: users,
+		})
+	}
+}
+
+// GetUsersOfOu returns all users of an organisational unit.
+func GetUsersOfOu(ucache *UsersCache) func(params operations.GetUsersOuIDParams) middleware.Responder {
+	return func(params operations.GetUsersOuIDParams) middleware.Responder {
+		id := strings.ToUpper(params.ID)
+
+		users := []*models.ResponseBodyUserMetadata{}
+		for _, u := range ucache.GetUsers() {
+			if contains(u.OrganizationalUnits, id) {
+				users = append(users, makeResponseBodyUserMetadata(u))
+			}
+		}
+
+		return operations.NewGetUsersOuIDOK().WithPayload(&models.ResponseBodyUsers{
+			Users: users,
+		})
+	}
+}
+
+// SearchUsers returns all users with matched email and/or display name.
+func SearchUsers(ucache *UsersCache) func(params operations.GetUsersSearchParams) middleware.Responder {
+	return func(params operations.GetUsersSearchParams) middleware.Responder {
+
+		users := []*models.ResponseBodyUserMetadata{}
+
+		// return immediately with an empty slice if both email and name query values are not specified
+		if params.Email == nil && params.Name == nil {
+			return operations.NewGetUsersOuIDOK().WithPayload(&models.ResponseBodyUsers{
+				Users: users,
+			})
+		}
+
+		for _, u := range ucache.GetUsers() {
+
+			// check email
+			if params.Email != nil && u.Email != *params.Email {
+				continue
+			}
+
+			// check display name
+			if params.Name != nil && !strings.Contains(u.DisplayName, *params.Name) {
+				continue
+			}
+
+			// this user has matched email and/or display name
+			users = append(users, makeResponseBodyUserMetadata(u))
+		}
+
+		return operations.NewGetUsersOuIDOK().WithPayload(&models.ResponseBodyUsers{
 			Users: users,
 		})
 	}

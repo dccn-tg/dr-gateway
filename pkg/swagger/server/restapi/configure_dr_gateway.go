@@ -87,6 +87,16 @@ func configureAPI(api *operations.DrGatewayAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetUsers has not yet been implemented")
 		})
 	}
+	if api.GetUsersOuIDHandler == nil {
+		api.GetUsersOuIDHandler = operations.GetUsersOuIDHandlerFunc(func(params operations.GetUsersOuIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetUsersOuID has not yet been implemented")
+		})
+	}
+	if api.GetUsersSearchHandler == nil {
+		api.GetUsersSearchHandler = operations.GetUsersSearchHandlerFunc(func(params operations.GetUsersSearchParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetUsersSearch has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 
