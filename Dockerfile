@@ -6,7 +6,7 @@ ADD internal ./internal
 ADD pkg ./pkg
 ADD go.mod .
 ADD go.sum .
-RUN ls -l /tmp/dr-gateway && GOOS=linux go build -a -installsuffix cgo -o bin/dr-gateway-api internal/api-server/main.go
+RUN ls -l /tmp/dr-gateway && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bin/dr-gateway-api internal/api-server/main.go
 
 # stage 1: build image for the api-server
 FROM alpine:latest as api-server
