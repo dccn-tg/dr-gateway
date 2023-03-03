@@ -73,12 +73,19 @@ func main() {
 	// initialize Cache
 	ctx, cancel := context.WithCancel(context.Background())
 
-	// collection cache
+	// collections cache
 	ccache := handler.CollectionsCache{
 		Config:  cfg,
 		Context: ctx,
 	}
 	ccache.Init()
+
+	// users cache
+	ucache := handler.UsersCache{
+		Config:  cfg,
+		Context: ctx,
+	}
+	ucache.Init()
 
 	// Initialize Swagger
 	swaggerSpec, err := loads.Analyzed(restapi.SwaggerJSON, "")
@@ -202,6 +209,8 @@ func main() {
 	api.GetCollectionsHandler = operations.GetCollectionsHandlerFunc(handler.GetCollections(&ccache))
 	api.GetCollectionsOuIDHandler = operations.GetCollectionsOuIDHandlerFunc(handler.GetCollectionsOfOu(&ccache))
 	api.GetCollectionsProjectIDHandler = operations.GetCollectionsProjectIDHandlerFunc(handler.GetCollectionsOfProject(&ccache))
+
+	api.GetUsersHandler = operations.GetUsersHandlerFunc(handler.GetUsers(&ucache))
 
 	// configure API
 	server.ConfigureAPI()
