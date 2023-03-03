@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose -p dr-gateway down
+docker stack rm dr-gateway
