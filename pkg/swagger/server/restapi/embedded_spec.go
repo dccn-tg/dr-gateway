@@ -125,6 +125,19 @@ func init() {
         }
       }
     },
+    "/metrics": {
+      "get": {
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/ping": {
       "get": {
         "security": [
@@ -538,6 +551,19 @@ func init() {
             "description": "failure",
             "schema": {
               "$ref": "#/definitions/responseBody500"
+            }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "string"
             }
           }
         }

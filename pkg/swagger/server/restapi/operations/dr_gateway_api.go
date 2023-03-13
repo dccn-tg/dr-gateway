@@ -53,6 +53,9 @@ func NewDrGatewayAPI(spec *loads.Document) *DrGatewayAPI {
 		GetCollectionsProjectIDHandler: GetCollectionsProjectIDHandlerFunc(func(params GetCollectionsProjectIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetCollectionsProjectID has not yet been implemented")
 		}),
+		GetMetricsHandler: GetMetricsHandlerFunc(func(params GetMetricsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetMetrics has not yet been implemented")
+		}),
 		GetPingHandler: GetPingHandlerFunc(func(params GetPingParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation GetPing has not yet been implemented")
 		}),
@@ -136,6 +139,8 @@ type DrGatewayAPI struct {
 	GetCollectionsOuIDHandler GetCollectionsOuIDHandler
 	// GetCollectionsProjectIDHandler sets the operation handler for the get collections project ID operation
 	GetCollectionsProjectIDHandler GetCollectionsProjectIDHandler
+	// GetMetricsHandler sets the operation handler for the get metrics operation
+	GetMetricsHandler GetMetricsHandler
 	// GetPingHandler sets the operation handler for the get ping operation
 	GetPingHandler GetPingHandler
 	// GetUsersHandler sets the operation handler for the get users operation
@@ -239,6 +244,9 @@ func (o *DrGatewayAPI) Validate() error {
 	}
 	if o.GetCollectionsProjectIDHandler == nil {
 		unregistered = append(unregistered, "GetCollectionsProjectIDHandler")
+	}
+	if o.GetMetricsHandler == nil {
+		unregistered = append(unregistered, "GetMetricsHandler")
 	}
 	if o.GetPingHandler == nil {
 		unregistered = append(unregistered, "GetPingHandler")
@@ -373,6 +381,10 @@ func (o *DrGatewayAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/collections/project/{id}"] = NewGetCollectionsProjectID(o.context, o.GetCollectionsProjectIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/metrics"] = NewGetMetrics(o.context, o.GetMetricsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

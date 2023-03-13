@@ -36,6 +36,8 @@ type ClientService interface {
 
 	GetCollectionsProjectID(params *GetCollectionsProjectIDParams, opts ...ClientOption) (*GetCollectionsProjectIDOK, error)
 
+	GetMetrics(params *GetMetricsParams, opts ...ClientOption) (*GetMetricsOK, error)
+
 	GetPing(params *GetPingParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetPingOK, error)
 
 	GetUsers(params *GetUsersParams, opts ...ClientOption) (*GetUsersOK, error)
@@ -158,6 +160,44 @@ func (a *Client) GetCollectionsProjectID(params *GetCollectionsProjectIDParams, 
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for GetCollectionsProjectID: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+GetMetrics prometheus metrics
+*/
+func (a *Client) GetMetrics(params *GetMetricsParams, opts ...ClientOption) (*GetMetricsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetMetricsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetMetrics",
+		Method:             "GET",
+		PathPattern:        "/metrics",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetMetricsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetMetricsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetMetrics: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
