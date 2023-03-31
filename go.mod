@@ -3,8 +3,8 @@ module github.com/Donders-Institute/dr-gateway
 go 1.20
 
 require (
-	github.com/Donders-Institute/tg-toolset-golang v0.0.0-20221031152334-cb43f0ad9650
-	github.com/cyverse/go-irodsclient v0.11.0
+	github.com/Donders-Institute/tg-toolset-golang v1.13.0
+	github.com/cyverse/go-irodsclient v0.11.3
 	github.com/go-openapi/errors v0.20.3
 	github.com/go-openapi/loads v0.21.2
 	github.com/go-openapi/runtime v0.25.0
@@ -58,7 +58,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
-	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
+	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
