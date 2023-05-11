@@ -184,6 +184,7 @@ func getCollections(acc *types.IRODSAccount, cpaths chan string) chan *DRCollect
 				return
 			}
 			defer conn.Disconnect()
+		collLoop:
 			for p := range cpaths {
 				c := new(DRCollection)
 				c.Path = p
@@ -193,6 +194,11 @@ func getCollections(acc *types.IRODSAccount, cpaths chan string) chan *DRCollect
 					for _, m := range meta {
 
 						switch m.Name {
+						case "deleted":
+							if m.Value == "true" {
+								// skip the deleted collection
+								continue collLoop
+							}
 						case "identifierDOI":
 							c.IdentifierDOI = m.Value
 						case "collectionIdentifier":

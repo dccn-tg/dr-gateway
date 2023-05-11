@@ -77,6 +77,11 @@ func configureAPI(api *operations.DrGatewayAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetCollectionsProjectID has not yet been implemented")
 		})
 	}
+	if api.GetMetricsHandler == nil {
+		api.GetMetricsHandler = operations.GetMetricsHandlerFunc(func(params operations.GetMetricsParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetMetrics has not yet been implemented")
+		})
+	}
 	if api.GetPingHandler == nil {
 		api.GetPingHandler = operations.GetPingHandlerFunc(func(params operations.GetPingParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation operations.GetPing has not yet been implemented")
@@ -85,6 +90,16 @@ func configureAPI(api *operations.DrGatewayAPI) http.Handler {
 	if api.GetUsersHandler == nil {
 		api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {
 			return middleware.NotImplemented("operation operations.GetUsers has not yet been implemented")
+		})
+	}
+	if api.GetUsersOuIDHandler == nil {
+		api.GetUsersOuIDHandler = operations.GetUsersOuIDHandlerFunc(func(params operations.GetUsersOuIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetUsersOuID has not yet been implemented")
+		})
+	}
+	if api.GetUsersSearchHandler == nil {
+		api.GetUsersSearchHandler = operations.GetUsersSearchHandlerFunc(func(params operations.GetUsersSearchParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetUsersSearch has not yet been implemented")
 		})
 	}
 

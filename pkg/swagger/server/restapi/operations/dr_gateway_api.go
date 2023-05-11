@@ -53,11 +53,20 @@ func NewDrGatewayAPI(spec *loads.Document) *DrGatewayAPI {
 		GetCollectionsProjectIDHandler: GetCollectionsProjectIDHandlerFunc(func(params GetCollectionsProjectIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetCollectionsProjectID has not yet been implemented")
 		}),
+		GetMetricsHandler: GetMetricsHandlerFunc(func(params GetMetricsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetMetrics has not yet been implemented")
+		}),
 		GetPingHandler: GetPingHandlerFunc(func(params GetPingParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation GetPing has not yet been implemented")
 		}),
 		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
+		}),
+		GetUsersOuIDHandler: GetUsersOuIDHandlerFunc(func(params GetUsersOuIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUsersOuID has not yet been implemented")
+		}),
+		GetUsersSearchHandler: GetUsersSearchHandlerFunc(func(params GetUsersSearchParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUsersSearch has not yet been implemented")
 		}),
 
 		// Applies when the "X-API-Key" header is set
@@ -130,10 +139,16 @@ type DrGatewayAPI struct {
 	GetCollectionsOuIDHandler GetCollectionsOuIDHandler
 	// GetCollectionsProjectIDHandler sets the operation handler for the get collections project ID operation
 	GetCollectionsProjectIDHandler GetCollectionsProjectIDHandler
+	// GetMetricsHandler sets the operation handler for the get metrics operation
+	GetMetricsHandler GetMetricsHandler
 	// GetPingHandler sets the operation handler for the get ping operation
 	GetPingHandler GetPingHandler
 	// GetUsersHandler sets the operation handler for the get users operation
 	GetUsersHandler GetUsersHandler
+	// GetUsersOuIDHandler sets the operation handler for the get users ou ID operation
+	GetUsersOuIDHandler GetUsersOuIDHandler
+	// GetUsersSearchHandler sets the operation handler for the get users search operation
+	GetUsersSearchHandler GetUsersSearchHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -230,11 +245,20 @@ func (o *DrGatewayAPI) Validate() error {
 	if o.GetCollectionsProjectIDHandler == nil {
 		unregistered = append(unregistered, "GetCollectionsProjectIDHandler")
 	}
+	if o.GetMetricsHandler == nil {
+		unregistered = append(unregistered, "GetMetricsHandler")
+	}
 	if o.GetPingHandler == nil {
 		unregistered = append(unregistered, "GetPingHandler")
 	}
 	if o.GetUsersHandler == nil {
 		unregistered = append(unregistered, "GetUsersHandler")
+	}
+	if o.GetUsersOuIDHandler == nil {
+		unregistered = append(unregistered, "GetUsersOuIDHandler")
+	}
+	if o.GetUsersSearchHandler == nil {
+		unregistered = append(unregistered, "GetUsersSearchHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -360,11 +384,23 @@ func (o *DrGatewayAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/metrics"] = NewGetMetrics(o.context, o.GetMetricsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/ping"] = NewGetPing(o.context, o.GetPingHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users/ou/{id}"] = NewGetUsersOuID(o.context, o.GetUsersOuIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users/search"] = NewGetUsersSearch(o.context, o.GetUsersSearchHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

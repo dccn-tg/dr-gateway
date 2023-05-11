@@ -1,0 +1,18 @@
+
+version: "3.7"
+services:
+  api-server:
+    build:
+      context: ./
+      target: api-server
+    image: ${DOCKER_REGISTRY:-dccn}/dr-gateway-api:${DOCKER_IMAGE_TAG:-latest}
+    ports:
+      - ${DR_GATEWAY_EXTERNAL_PORT:-8080}:8080
+    volumes:
+      - ${CFG_API_SERVER:-/mnt/docker/scripts/microservices/dr-gateway/api-server.yml}:/etc/dr-gateway/config.yml:ro
+    command: -p 8080 -c /etc/dr-gateway/config.yml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
