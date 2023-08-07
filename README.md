@@ -1,2 +1,2 @@
 # dr-gateway
-API gateway for the Donders Repository
+API gateway for the Donders Repository.
