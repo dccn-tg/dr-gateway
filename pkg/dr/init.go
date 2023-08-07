@@ -1,6 +1,8 @@
 package dr
 
 import (
+	"strings"
+
 	"github.com/cyverse/go-irodsclient/irods/types"
 )
 
@@ -10,7 +12,24 @@ type Config struct {
 	IrodsZone           string
 	IrodsUser           string
 	IrodsPass           string
+	IrodsAuthScheme     string
+	IrodsSslCacert      string
+	IrodsSslKeysize     int
+	IrodsSslAlgorithm   string
+	IrodsSslSaltSize    int
+	IrodsHashRounds     int
 	OrganisationalUnits []string
+}
+
+func (c Config) AuthSchemeType() types.AuthScheme {
+	switch strings.ToLower(c.IrodsAuthScheme) {
+	case "pam":
+		return types.AuthSchemePAM
+	case "gsi":
+		return types.AuthSchemeGSI
+	default:
+		return types.AuthSchemeNative
+	}
 }
 
 func NewAccount(config Config) (*types.IRODSAccount, error) {
@@ -20,7 +39,7 @@ func NewAccount(config Config) (*types.IRODSAccount, error) {
 		config.IrodsPort,
 		config.IrodsUser,
 		config.IrodsZone,
-		types.AuthSchemeNative,
+		config.AuthSchemeType(),
 		config.IrodsPass,
 		"",
 	)
@@ -29,20 +48,20 @@ func NewAccount(config Config) (*types.IRODSAccount, error) {
 		return nil, err
 	}
 
-	// sslConfig, err := types.CreateIRODSSSLConfig(
-	// 	"/opt/irods/ssl/icat-prod.pem",
-	// 	32,
-	// 	"AES-256-CBC",
-	// 	8,
-	// 	16,
-	// )
-	// if err != nil {
-	// 	return nil, err
-	// }
+	sslConfig, err := types.CreateIRODSSSLConfig(
+		config.IrodsSslCacert,
+		config.IrodsSslKeysize,
+		config.IrodsSslAlgorithm,
+		config.IrodsSslSaltSize,
+		config.IrodsHashRounds,
+	)
+	if err != nil {
+		return nil, err
+	}
 
-	// account.SSLConfiguration = sslConfig
-	// account.CSNegotiationPolicy = types.CSNegotiationRequireSSL
-	// account.ClientServerNegotiation = true
+	account.SSLConfiguration = sslConfig
+	account.CSNegotiationPolicy = types.CSNegotiationRequireSSL
+	account.ClientServerNegotiation = true
 
 	return account, nil
 }
@@ -56,7 +75,7 @@ func NewProxyAccount(config Config, user string) (*types.IRODSAccount, error) {
 		config.IrodsZone,
 		config.IrodsUser,
 		config.IrodsZone,
-		types.AuthSchemeNative,
+		config.AuthSchemeType(),
 		config.IrodsPass,
 		"",
 	)
@@ -65,20 +84,20 @@ func NewProxyAccount(config Config, user string) (*types.IRODSAccount, error) {
 		return nil, err
 	}
 
-	// sslConfig, err := types.CreateIRODSSSLConfig(
-	// 	"/opt/irods/ssl/icat-prod.pem",
-	// 	32,
-	// 	"AES-256-CBC",
-	// 	8,
-	// 	16,
-	// )
-	// if err != nil {
-	// 	return nil, err
-	// }
+	sslConfig, err := types.CreateIRODSSSLConfig(
+		config.IrodsSslCacert,
+		config.IrodsSslKeysize,
+		config.IrodsSslAlgorithm,
+		config.IrodsSslSaltSize,
+		config.IrodsHashRounds,
+	)
+	if err != nil {
+		return nil, err
+	}
 
-	// account.SSLConfiguration = sslConfig
-	// account.CSNegotiationPolicy = types.CSNegotiationRequireSSL
-	// account.ClientServerNegotiation = true
+	account.SSLConfiguration = sslConfig
+	account.CSNegotiationPolicy = types.CSNegotiationRequireSSL
+	account.ClientServerNegotiation = true
 
 	return account, nil
 }

@@ -67,7 +67,7 @@ func main() {
 
 	cfg, err := config.LoadConfig(*configFile)
 	if err != nil {
-		log.Fatalf("fail to load configuration: %s", *configFile)
+		log.Fatalf("fail to load configuration: %s (%s)", *configFile, err)
 	}
 
 	// initialize Cache
