@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Donders-Institute/dr-gateway/pkg/dr"
+	"github.com/dccn-tg/dr-gateway/pkg/dr"
 	"github.com/spf13/viper"
 )
 

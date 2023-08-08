@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/models"
 )
 
 // GetUsersOKCode is the HTTP code returned for type GetUsersOK

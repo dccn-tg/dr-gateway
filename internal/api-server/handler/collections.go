@@ -3,9 +3,9 @@ package handler
 import (
 	"strings"
 
-	"github.com/Donders-Institute/dr-gateway/pkg/dr"
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/restapi/operations"
+	"github.com/dccn-tg/dr-gateway/pkg/dr"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/models"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
 )
 

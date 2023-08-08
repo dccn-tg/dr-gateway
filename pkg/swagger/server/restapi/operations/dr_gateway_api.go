@@ -19,7 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/models"
 )
 
 // NewDrGatewayAPI creates a new DrGateway instance

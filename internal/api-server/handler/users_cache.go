@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Donders-Institute/dr-gateway/internal/api-server/config"
-	"github.com/Donders-Institute/dr-gateway/pkg/dr"
-	log "github.com/Donders-Institute/tg-toolset-golang/pkg/logger"
+	"github.com/dccn-tg/dr-gateway/internal/api-server/config"
+	"github.com/dccn-tg/dr-gateway/pkg/dr"
+	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
 )
 
 // UsersCache is an in-memory store for caching all DR users.

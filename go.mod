@@ -1,10 +1,10 @@
-module github.com/Donders-Institute/dr-gateway
+module github.com/dccn-tg/dr-gateway
 
 go 1.20
 
 require (
-	github.com/Donders-Institute/tg-toolset-golang v1.13.0
 	github.com/cyverse/go-irodsclient v0.12.7
+	github.com/dccn-tg/tg-toolset-golang v1.21.0
 	github.com/go-openapi/errors v0.20.3
 	github.com/go-openapi/loads v0.21.2
 	github.com/go-openapi/runtime v0.25.0
@@ -14,6 +14,7 @@ require (
 	github.com/go-openapi/validate v0.22.1
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jessevdk/go-flags v1.5.0
+	github.com/prometheus/client_golang v1.14.0
 	github.com/s12v/go-jwks v0.2.1
 	github.com/spf13/viper v1.15.0
 	github.com/square/go-jose v2.6.0+incompatible
@@ -42,7 +43,6 @@ require (
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
-	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect

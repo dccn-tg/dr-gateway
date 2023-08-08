@@ -7,18 +7,18 @@ import (
 	"os"
 	"time"
 
-	"github.com/Donders-Institute/dr-gateway/internal/api-server/config"
-	"github.com/Donders-Institute/dr-gateway/internal/api-server/handler"
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/restapi"
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/restapi/operations"
+	"github.com/dccn-tg/dr-gateway/internal/api-server/config"
+	"github.com/dccn-tg/dr-gateway/internal/api-server/handler"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/models"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/restapi"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/restapi/operations"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/loads"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/s12v/go-jwks"
 	"github.com/square/go-jose"
 
-	log "github.com/Donders-Institute/tg-toolset-golang/pkg/logger"
+	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
 )
 
 var (

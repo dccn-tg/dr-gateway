@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 
-	"github.com/Donders-Institute/dr-gateway/pkg/swagger/server/models"
+	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/models"
 )
 
 // GetPingHandlerFunc turns a function with the right signature into a get ping handler
