@@ -113,32 +113,6 @@ func main() {
 	server.ListenLimit = 10
 	server.TLSListenLimit = 10
 
-	// authentication with api key.
-	api.APIKeyHeaderAuth = func(token string) (*models.Principal, error) {
-
-		if token != cfg.ApiKey {
-			return nil, errors.New(401, "incorrect api key auth")
-		}
-
-		// there is no user information attached, set the Principal as empty string.
-		Principal := models.Principal("")
-		return &Principal, nil
-	}
-
-	// authentication with username/password.
-	api.BasicAuthAuth = func(username, password string) (*models.Principal, error) {
-
-		pass, ok := cfg.Auth[username]
-
-		if !ok || pass != password {
-			return nil, errors.New(401, "incorrect username/password")
-		}
-
-		// there is login user information attached, set the Principal as the username.
-		Principal := models.Principal(username)
-		return &Principal, nil
-	}
-
 	// authentication with oauth2 token.
 	api.Oauth2Auth = func(tokenStr string, scopes []string) (*models.Principal, error) {
 
