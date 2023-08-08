@@ -8,20 +8,12 @@ info:
   version: 0.1.0
 
 securityDefinitions:
-  basicAuth:
-    type: basic
-
-  apiKeyHeader:
-    type: apiKey
-    in: header
-    name: X-API-Key
-
   oauth2:
     type: oauth2
     flow: application
     tokenUrl: 'https://login.dccn.nl/connect/token'
     scopes:
-      urn:dccn:filer-gateway:*: general access scope for filer-gateway APIs
+      urn:dccn:dr-gateway:*: general access scope for dr-gateway APIs
 
 # API paths
 paths:

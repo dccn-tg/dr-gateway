@@ -251,6 +251,7 @@ func (m *ResponseBodyCollectionMetadata) ContextValidate(ctx context.Context, fo
 func (m *ResponseBodyCollectionMetadata) contextValidateState(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.State != nil {
+
 		if err := m.State.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("state")
@@ -267,6 +268,7 @@ func (m *ResponseBodyCollectionMetadata) contextValidateState(ctx context.Contex
 func (m *ResponseBodyCollectionMetadata) contextValidateType(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.Type != nil {
+
 		if err := m.Type.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("type")

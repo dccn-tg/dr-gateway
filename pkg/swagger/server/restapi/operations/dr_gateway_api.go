@@ -69,14 +69,6 @@ func NewDrGatewayAPI(spec *loads.Document) *DrGatewayAPI {
 			return middleware.NotImplemented("operation GetUsersSearch has not yet been implemented")
 		}),
 
-		// Applies when the "X-API-Key" header is set
-		APIKeyHeaderAuth: func(token string) (*models.Principal, error) {
-			return nil, errors.NotImplemented("api key auth (apiKeyHeader) X-API-Key from header param [X-API-Key] has not yet been implemented")
-		},
-		// Applies when the Authorization header is set with the Basic scheme
-		BasicAuthAuth: func(user string, pass string) (*models.Principal, error) {
-			return nil, errors.NotImplemented("basic auth  (basicAuth) has not yet been implemented")
-		},
 		Oauth2Auth: func(token string, scopes []string) (*models.Principal, error) {
 			return nil, errors.NotImplemented("oauth2 bearer auth (oauth2) has not yet been implemented")
 		},
@@ -117,14 +109,6 @@ type DrGatewayAPI struct {
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
-
-	// APIKeyHeaderAuth registers a function that takes a token and returns a principal
-	// it performs authentication based on an api key X-API-Key provided in the header
-	APIKeyHeaderAuth func(string) (*models.Principal, error)
-
-	// BasicAuthAuth registers a function that takes username and password and returns a principal
-	// it performs authentication with basic auth
-	BasicAuthAuth func(string, string) (*models.Principal, error)
 
 	// Oauth2Auth registers a function that takes an access token and a collection of required scopes and returns a principal
 	// it performs authentication based on an oauth2 bearer token provided in the request
@@ -226,12 +210,6 @@ func (o *DrGatewayAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.APIKeyHeaderAuth == nil {
-		unregistered = append(unregistered, "XAPIKeyAuth")
-	}
-	if o.BasicAuthAuth == nil {
-		unregistered = append(unregistered, "BasicAuthAuth")
-	}
 	if o.Oauth2Auth == nil {
 		unregistered = append(unregistered, "Oauth2Auth")
 	}
@@ -278,17 +256,6 @@ func (o *DrGatewayAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme)
 	result := make(map[string]runtime.Authenticator)
 	for name := range schemes {
 		switch name {
-		case "apiKeyHeader":
-			scheme := schemes[name]
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, func(token string) (interface{}, error) {
-				return o.APIKeyHeaderAuth(token)
-			})
-
-		case "basicAuth":
-			result[name] = o.BasicAuthenticator(func(username, password string) (interface{}, error) {
-				return o.BasicAuthAuth(username, password)
-			})
-
 		case "oauth2":
 			result[name] = o.BearerAuthenticator(name, func(token string, scopes []string) (interface{}, error) {
 				return o.Oauth2Auth(token, scopes)
@@ -442,6 +409,6 @@ func (o *DrGatewayAPI) AddMiddlewareFor(method, path string, builder middleware.
 	}
 	o.Init()
 	if h, ok := o.handlers[um][path]; ok {
-		o.handlers[method][path] = builder(h)
+		o.handlers[um][path] = builder(h)
 	}
 }

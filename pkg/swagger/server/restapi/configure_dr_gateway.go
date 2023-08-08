@@ -38,18 +38,6 @@ func configureAPI(api *operations.DrGatewayAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	// Applies when the "X-API-Key" header is set
-	if api.APIKeyHeaderAuth == nil {
-		api.APIKeyHeaderAuth = func(token string) (*models.Principal, error) {
-			return nil, errors.NotImplemented("api key auth (apiKeyHeader) X-API-Key from header param [X-API-Key] has not yet been implemented")
-		}
-	}
-	// Applies when the Authorization header is set with the Basic scheme
-	if api.BasicAuthAuth == nil {
-		api.BasicAuthAuth = func(user string, pass string) (*models.Principal, error) {
-			return nil, errors.NotImplemented("basic auth  (basicAuth) has not yet been implemented")
-		}
-	}
 	if api.Oauth2Auth == nil {
 		api.Oauth2Auth = func(token string, scopes []string) (*models.Principal, error) {
 			return nil, errors.NotImplemented("oauth2 bearer auth (oauth2) has not yet been implemented")

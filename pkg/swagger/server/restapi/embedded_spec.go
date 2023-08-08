@@ -430,20 +430,12 @@ func init() {
     }
   },
   "securityDefinitions": {
-    "apiKeyHeader": {
-      "type": "apiKey",
-      "name": "X-API-Key",
-      "in": "header"
-    },
-    "basicAuth": {
-      "type": "basic"
-    },
     "oauth2": {
       "type": "oauth2",
       "flow": "application",
       "tokenUrl": "https://login.dccn.nl/connect/token",
       "scopes": {
-        "urn:dccn:filer-gateway:*": "general access scope for filer-gateway APIs"
+        "urn:dccn:dr-gateway:*": "general access scope for dr-gateway APIs"
       }
     }
   }
@@ -861,20 +853,12 @@ func init() {
     }
   },
   "securityDefinitions": {
-    "apiKeyHeader": {
-      "type": "apiKey",
-      "name": "X-API-Key",
-      "in": "header"
-    },
-    "basicAuth": {
-      "type": "basic"
-    },
     "oauth2": {
       "type": "oauth2",
       "flow": "application",
       "tokenUrl": "https://login.dccn.nl/connect/token",
       "scopes": {
-        "urn:dccn:filer-gateway:*": "general access scope for filer-gateway APIs"
+        "urn:dccn:dr-gateway:*": "general access scope for dr-gateway APIs"
       }
     }
   }
