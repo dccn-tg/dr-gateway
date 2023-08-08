@@ -9,7 +9,7 @@ dr:
   irodsUser: user
   irodsPass: pass
   irodsAuthScheme: native
-  irodsCacert: /opt/irods/ssl/icat-prod.pem
+  irodsSslCacert: /opt/irods/ssl/icat-prod.pem
   irodsSslKeysize: 32
   irodsSslAlgorithm: AES-256-CBC
   irodsSslSaltSize: 8
