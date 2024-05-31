@@ -4,10 +4,10 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
 	"github.com/cyverse/go-irodsclient/irods/connection"
 	"github.com/cyverse/go-irodsclient/irods/fs"
 	"github.com/cyverse/go-irodsclient/irods/types"
+	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
 )
 
 type DRUser struct {
@@ -18,9 +18,22 @@ type DRUser struct {
 }
 
 func GetAllUsers(config Config) (chan *DRUser, error) {
+
+	// general iRODS account
 	acc, err := NewAccount(config)
 	if err != nil {
 		return nil, err
+	}
+
+	// use the first service account if specified
+	accounts, err := NewServiceAccounts(config)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, account := range accounts {
+		acc = account
+		break
 	}
 
 	uids := make(chan string, 10000)
