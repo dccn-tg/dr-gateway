@@ -12,10 +12,12 @@ import (
 	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/models"
 	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/restapi"
 	"github.com/dccn-tg/dr-gateway/pkg/swagger/server/restapi/operations"
+	"github.com/fsnotify/fsnotify"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/loads"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/s12v/go-jwks"
+	"github.com/spf13/viper"
 	"github.com/square/go-jose"
 
 	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
@@ -86,6 +88,24 @@ func main() {
 		Context: ctx,
 	}
 	ucache.Init()
+
+	// watch configuration file change
+	viper.OnConfigChange(func(in fsnotify.Event) {
+
+		if in.Op != fsnotify.Write {
+			return
+		}
+
+		if ncfg, err := config.LoadConfig(in.Name); err != nil {
+			log.Errorf("fail to reload configuration: %s (%s)", in.Name, err)
+		} else {
+			ccache.UpdateConfig(ncfg)
+			ucache.UpdateConfig(ncfg)
+			cfg = ncfg
+			log.Debugf("config file reloaded upon change: %s\n", in.Name)
+		}
+	})
+	viper.WatchConfig()
 
 	// Initialize Swagger
 	swaggerSpec, err := loads.Analyzed(restapi.SwaggerJSON, "")

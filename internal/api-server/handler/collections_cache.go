@@ -70,6 +70,13 @@ func (c *CollectionsCache) refresh() {
 	}
 }
 
+// UpdateConfig updates configuration data
+func (c *CollectionsCache) UpdateConfig(cfg config.Configuration) {
+	c.mutex.Lock()
+	c.Config = cfg
+	c.mutex.Unlock()
+}
+
 // GetCollections returns all collections from cache
 func (c *CollectionsCache) GetCollections() []*dr.DRCollection {
 
