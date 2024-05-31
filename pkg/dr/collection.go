@@ -5,10 +5,10 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
 	"github.com/cyverse/go-irodsclient/irods/connection"
 	"github.com/cyverse/go-irodsclient/irods/fs"
 	"github.com/cyverse/go-irodsclient/irods/types"
+	log "github.com/dccn-tg/tg-toolset-golang/pkg/logger"
 )
 
 type CollectionState int
@@ -104,70 +104,89 @@ type DRCollection struct {
 	NumberOfFiles      int64
 }
 
+type ouPath struct {
+	ou   string
+	path string
+}
+
 func GetAllCollections(config Config) (chan *DRCollection, error) {
-	acc, err := NewAccount(config)
+
+	accounts, err := NewServiceAccounts(config)
 	if err != nil {
 		return nil, err
 	}
 
-	cpaths := make(chan string, 10000)
+	cpaths := make(chan ouPath, 10000)
 	go func() {
 
 		defer close(cpaths)
 
-		conn := connection.NewIRODSConnection(acc, 300*time.Second, "dr-gateway")
-		if err := conn.Connect(); err != nil {
-			log.Errorf("connection failure: %s", err)
-			return
-		}
-		defer conn.Disconnect()
-
 		for _, ou := range config.OrganisationalUnits {
-			if _colls, err := fs.SearchCollectionsByMeta(conn, "organisationalUnit", ou); err != nil {
+
+			acc := accounts[ou.Name]
+
+			conn := connection.NewIRODSConnection(acc, 300*time.Second, "dr-gateway")
+			if err := conn.Connect(); err != nil {
+				log.Errorf("connection failure: %s", err)
+				return
+			}
+			defer conn.Disconnect()
+
+			if _colls, err := fs.SearchCollectionsByMeta(conn, "organisationalUnit", ou.Name); err != nil {
 				log.Errorf("%s\n", err.Error())
 			} else {
 				for _, c := range _colls {
-					cpaths <- c.Path
+					cpaths <- ouPath{
+						ou.Name,
+						c.Path,
+					}
 				}
 			}
 		}
 	}()
 
-	return getCollections(acc, cpaths), nil
+	return getCollections(accounts, cpaths), nil
 }
 
 func FindCollectionsByMeta(config Config, key, value string) (chan *DRCollection, error) {
-	//acc, err := dr.NewProxyAccount(os.Args[1])
-	acc, err := NewAccount(config)
+
+	accounts, err := NewServiceAccounts(config)
 	if err != nil {
 		return nil, err
 	}
 
-	cpaths := make(chan string, 10000)
+	cpaths := make(chan ouPath, 10000)
 	go func() {
 
 		defer close(cpaths)
 
-		conn := connection.NewIRODSConnection(acc, 300*time.Second, "dr-gateway")
-		if err := conn.Connect(); err != nil {
-			log.Errorf("connection failure: %s", err)
-			return
-		}
-		defer conn.Disconnect()
+		for _, ou := range config.OrganisationalUnits {
+			acc := accounts[ou.Name]
 
-		if _colls, err := fs.SearchCollectionsByMeta(conn, key, value); err != nil {
-			log.Errorf(err.Error())
-		} else {
-			for _, c := range _colls {
-				cpaths <- c.Path
+			conn := connection.NewIRODSConnection(acc, 300*time.Second, "dr-gateway")
+			if err := conn.Connect(); err != nil {
+				log.Errorf("connection failure: %s", err)
+				return
+			}
+			defer conn.Disconnect()
+
+			if _colls, err := fs.SearchCollectionsByMeta(conn, key, value); err != nil {
+				log.Errorf(err.Error())
+			} else {
+				for _, c := range _colls {
+					cpaths <- ouPath{
+						ou.Name,
+						c.Path,
+					}
+				}
 			}
 		}
 	}()
 
-	return getCollections(acc, cpaths), nil
+	return getCollections(accounts, cpaths), nil
 }
 
-func getCollections(acc *types.IRODSAccount, cpaths chan string) chan *DRCollection {
+func getCollections(accounts map[string]*types.IRODSAccount, cpaths chan ouPath) chan *DRCollection {
 
 	colls := make(chan *DRCollection, 1)
 
@@ -178,17 +197,28 @@ func getCollections(acc *types.IRODSAccount, cpaths chan string) chan *DRCollect
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			conn := connection.NewIRODSConnection(acc, 300*time.Second, "dr-gateway")
-			if err := conn.Connect(); err != nil {
-				log.Errorf(err.Error())
-				return
-			}
-			defer conn.Disconnect()
+
+			// OU-specific connection map.
+			// connections will be initialized later whenever needed.
+			// initialized connections is kept in the map for reuse.
+			conns := make(map[string]*connection.IRODSConnection)
+
 		collLoop:
 			for p := range cpaths {
 				c := new(DRCollection)
-				c.Path = p
-				if meta, err := fs.ListCollectionMeta(conn, p); err != nil {
+				c.Path = p.path
+
+				if _, ok := conns[p.ou]; !ok {
+					conn := connection.NewIRODSConnection(accounts[p.ou], 300*time.Second, "dr-gateway")
+					if err := conn.Connect(); err != nil {
+						log.Errorf(err.Error())
+						continue collLoop
+					} else {
+						conns[p.ou] = conn
+					}
+				}
+
+				if meta, err := fs.ListCollectionMeta(conns[p.ou], p.path); err != nil {
 					log.Errorf(err.Error())
 				} else {
 					for _, m := range meta {
@@ -228,6 +258,11 @@ func getCollections(acc *types.IRODSAccount, cpaths chan string) chan *DRCollect
 					}
 					colls <- c
 				}
+			}
+
+			// closing up all connections
+			for _, conn := range conns {
+				conn.Disconnect()
 			}
 		}()
 	}
