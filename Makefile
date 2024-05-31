@@ -25,7 +25,7 @@ doc: swagger
 	swagger serve pkg/swagger/swagger.yaml
 
 test_dr: build
-	GOOS=$(GOOS) GO111MODULE=$(GO111MODULE) DR_GATEWAY_CONFIG=$(DR_GATEWAY_CONFIG) go test -v github.com/dccn-tg/dr-gateway/pkg/dr/... 
+	GOOS=$(GOOS) GO111MODULE=$(GO111MODULE) DR_GATEWAY_CONFIG=$(DR_GATEWAY_CONFIG) go test -v -count=1 github.com/dccn-tg/dr-gateway/pkg/dr/... 
 
 clean:
 	rm -rf bin
