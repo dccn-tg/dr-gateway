@@ -70,6 +70,13 @@ func (c *UsersCache) refresh() {
 	}
 }
 
+// UpdateConfig updates configuration data
+func (c *UsersCache) UpdateConfig(cfg config.Configuration) {
+	c.mutex.Lock()
+	c.Config = cfg
+	c.mutex.Unlock()
+}
+
 // GetUsers returns all users from cache
 func (c *UsersCache) GetUsers() []*dr.DRUser {
 

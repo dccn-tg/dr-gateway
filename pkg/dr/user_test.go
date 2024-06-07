@@ -27,29 +27,31 @@ func initLogger() {
 // load configuration to DRConfig structure
 func loadDRConfig(cpath string) (Config, error) {
 
-	var conf Config
+	var conf struct {
+		Dr Config
+	}
 
 	// load configuration
 	cfg, err := filepath.Abs(cpath)
 	if err != nil {
-		return conf, err
+		return conf.Dr, err
 	}
 
 	if _, err := os.Stat(cfg); err != nil {
-		return conf, fmt.Errorf("cannot load config: %s", cfg)
+		return conf.Dr, fmt.Errorf("cannot load config: %s", cfg)
 	}
 
 	viper.SetConfigFile(cfg)
 	if err := viper.ReadInConfig(); err != nil {
-		return conf, fmt.Errorf("cannot read config file, %s", err)
+		return conf.Dr, fmt.Errorf("cannot read config file, %s", err)
 	}
 
 	err = viper.Unmarshal(&conf)
 	if err != nil {
-		return conf, fmt.Errorf("unable to decode into struct, %v", err)
+		return conf.Dr, fmt.Errorf("unable to decode into struct, %v", err)
 	}
 
-	return conf, nil
+	return conf.Dr, nil
 }
 
 func TestGetAllUsers(t *testing.T) {
