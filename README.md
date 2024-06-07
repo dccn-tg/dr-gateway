@@ -4,7 +4,7 @@ This API gateway provides RESTful API interfaces for querying and searching on a
 
 ## how it works
 
-Every 10 minutes, it queries all collections and users available to the RDR service account and caches the results for quick response to the API client. When interacting with iRODS iCAT service, it makes use of the [go-irodsclient](https://github.com/cyverse/go-irodsclient).
+Every 10 minutes, it queries all collections and users available to the RDR service account (defined as `irodsUser` and `irodsPass` attributes in [config.yml](config/config.yml) ).  The results are cached in memory for quick response to the API client. When interacting with iRODS iCAT service, it makes use of the [go-irodsclient](https://github.com/cyverse/go-irodsclient).
 
 The API interface is defined by [swagger.yml](pkg/swagger/swagger.yaml).
 
