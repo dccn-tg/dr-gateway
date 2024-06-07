@@ -203,6 +203,13 @@ func getCollections(accounts map[string]*types.IRODSAccount, cpaths chan ouPath)
 			// initialized connections is kept in the map for reuse.
 			conns := make(map[string]*connection.IRODSConnection)
 
+			// closing up all connections
+			defer func() {
+				for _, conn := range conns {
+					conn.Disconnect()
+				}
+			}()
+
 		collLoop:
 			for p := range cpaths {
 				c := new(DRCollection)
@@ -258,11 +265,6 @@ func getCollections(accounts map[string]*types.IRODSAccount, cpaths chan ouPath)
 					}
 					colls <- c
 				}
-			}
-
-			// closing up all connections
-			for _, conn := range conns {
-				conn.Disconnect()
 			}
 		}()
 	}
