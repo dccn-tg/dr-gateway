@@ -1,5 +1,5 @@
 def docker_ps_health_check(list) {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < list.size(); i++) {d
         statusCode = sh(
             returnStatus: true,
             label: "checking if ${list[i]} in running state",
@@ -184,15 +184,15 @@ pipeline {
 
                     // Remove remote tag (if any)
                     script {
-                        def result = sh(script: "git ls-remote https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/Donders-Institute/dr-gateway.git refs/tags/${params.PRODUCTION_GITHUB_TAG}", returnStdout: true).trim()
+                        def result = sh(script: "git ls-remote https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/dccn-tg/dr-gateway.git refs/tags/${params.PRODUCTION_GITHUB_TAG}", returnStdout: true).trim()
                         if (result != "") {
-                            sh "git push --delete https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/Donders-Institute/dr-gateway.git ${params.PRODUCTION_GITHUB_TAG}"
+                            sh "git push --delete https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/dccn-tg/dr-gateway.git ${params.PRODUCTION_GITHUB_TAG}"
                             echo "Removed existing remote tag ${params.PRODUCTION_GITHUB_TAG}"
                         }
                     }
 
                     // Create remote tag
-                    sh "git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/Donders-Institute/dr-gateway.git ${params.PRODUCTION_GITHUB_TAG}"
+                    sh "git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/dccn-tg/dr-gateway.git ${params.PRODUCTION_GITHUB_TAG}"
                     echo "Created remote tag ${params.PRODUCTION_GITHUB_TAG}"
                 }
 
