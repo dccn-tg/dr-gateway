@@ -306,7 +306,7 @@ definitions:
   collectionState:
     description: collection state
     type: string
-    enum: [editable, reviewable_internal, reviewable_external, archived, published, unknown]
+    enum: [editable, reviewable_internal, fair_review, reviewable_external, archived, published, unknown]
 
   principal:
     type: string

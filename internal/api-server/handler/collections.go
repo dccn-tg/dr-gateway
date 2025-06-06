@@ -82,6 +82,8 @@ func collectionState(s dr.CollectionState) *models.CollectionState {
 		return models.CollectionStateEditable.Pointer()
 	case dr.ReviewableInternal:
 		return models.CollectionStateReviewableInternal.Pointer()
+	case dr.FairReview:
+		return models.CollectionStateFairReview.Pointer()
 	case dr.ReviewableExternal:
 		return models.CollectionStateReviewableExternal.Pointer()
 	case dr.Archived:

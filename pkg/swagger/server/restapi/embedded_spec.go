@@ -289,6 +289,7 @@ func init() {
       "enum": [
         "editable",
         "reviewable_internal",
+        "fair_review",
         "reviewable_external",
         "archived",
         "published",
@@ -712,6 +713,7 @@ func init() {
       "enum": [
         "editable",
         "reviewable_internal",
+        "fair_review",
         "reviewable_external",
         "archived",
         "published",

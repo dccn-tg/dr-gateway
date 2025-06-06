@@ -36,6 +36,9 @@ const (
 	// CollectionStateReviewableInternal captures enum value "reviewable_internal"
 	CollectionStateReviewableInternal CollectionState = "reviewable_internal"
 
+	// CollectionStateFairReview captures enum value "fair_review"
+	CollectionStateFairReview CollectionState = "fair_review"
+
 	// CollectionStateReviewableExternal captures enum value "reviewable_external"
 	CollectionStateReviewableExternal CollectionState = "reviewable_external"
 
@@ -54,7 +57,7 @@ var collectionStateEnum []interface{}
 
 func init() {
 	var res []CollectionState
-	if err := json.Unmarshal([]byte(`["editable","reviewable_internal","reviewable_external","archived","published","unknown"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["editable","reviewable_internal","fair_review","reviewable_external","archived","published","unknown"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

@@ -6,6 +6,7 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -85,11 +86,13 @@ func (o *GetCollectionsProjectIDOK) Code() int {
 }
 
 func (o *GetCollectionsProjectIDOK) Error() string {
-	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdOK %s", 200, payload)
 }
 
 func (o *GetCollectionsProjectIDOK) String() string {
-	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdOK %s", 200, payload)
 }
 
 func (o *GetCollectionsProjectIDOK) GetPayload() *models.ResponseBodyCollections {
@@ -153,11 +156,13 @@ func (o *GetCollectionsProjectIDInternalServerError) Code() int {
 }
 
 func (o *GetCollectionsProjectIDInternalServerError) Error() string {
-	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdInternalServerError %s", 500, payload)
 }
 
 func (o *GetCollectionsProjectIDInternalServerError) String() string {
-	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/project/{id}][%d] getCollectionsProjectIdInternalServerError %s", 500, payload)
 }
 
 func (o *GetCollectionsProjectIDInternalServerError) GetPayload() *models.ResponseBody500 {

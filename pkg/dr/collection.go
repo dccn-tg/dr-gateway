@@ -17,6 +17,7 @@ const (
 	UnknownState CollectionState = iota
 	Editable
 	ReviewableInternal
+	FairReview
 	ReviewableExternal
 	Archived
 	Published
@@ -28,6 +29,8 @@ func (c CollectionState) String() string {
 		return "EDITABLE"
 	case ReviewableInternal:
 		return "REVIEWABLE_INTERNAL"
+	case FairReview:
+		return "FAIR_REVIEW"
 	case ReviewableExternal:
 		return "REVIEWABLE_EXTERNAL"
 	case Archived:
@@ -45,6 +48,8 @@ func NewCollectionState(stat string) CollectionState {
 		return Editable
 	case "REVIEWABLE_INTERNAL":
 		return ReviewableInternal
+	case "FAIR_REVIEW":
+		return FairReview
 	case "REVIEWABLE_EXTERNAL":
 		return ReviewableExternal
 	case "ARCHIVED":
