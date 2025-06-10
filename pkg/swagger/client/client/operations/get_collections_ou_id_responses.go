@@ -6,6 +6,7 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -85,11 +86,13 @@ func (o *GetCollectionsOuIDOK) Code() int {
 }
 
 func (o *GetCollectionsOuIDOK) Error() string {
-	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdOK %s", 200, payload)
 }
 
 func (o *GetCollectionsOuIDOK) String() string {
-	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdOK %s", 200, payload)
 }
 
 func (o *GetCollectionsOuIDOK) GetPayload() *models.ResponseBodyCollections {
@@ -153,11 +156,13 @@ func (o *GetCollectionsOuIDInternalServerError) Code() int {
 }
 
 func (o *GetCollectionsOuIDInternalServerError) Error() string {
-	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdInternalServerError %s", 500, payload)
 }
 
 func (o *GetCollectionsOuIDInternalServerError) String() string {
-	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /collections/ou/{id}][%d] getCollectionsOuIdInternalServerError %s", 500, payload)
 }
 
 func (o *GetCollectionsOuIDInternalServerError) GetPayload() *models.ResponseBody500 {

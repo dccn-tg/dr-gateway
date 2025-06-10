@@ -6,6 +6,7 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -85,11 +86,13 @@ func (o *GetUsersSearchOK) Code() int {
 }
 
 func (o *GetUsersSearchOK) Error() string {
-	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchOK %s", 200, payload)
 }
 
 func (o *GetUsersSearchOK) String() string {
-	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchOK %s", 200, payload)
 }
 
 func (o *GetUsersSearchOK) GetPayload() *models.ResponseBodyUsers {
@@ -153,11 +156,13 @@ func (o *GetUsersSearchInternalServerError) Code() int {
 }
 
 func (o *GetUsersSearchInternalServerError) Error() string {
-	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchInternalServerError %s", 500, payload)
 }
 
 func (o *GetUsersSearchInternalServerError) String() string {
-	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /users/search][%d] getUsersSearchInternalServerError %s", 500, payload)
 }
 
 func (o *GetUsersSearchInternalServerError) GetPayload() *models.ResponseBody500 {
